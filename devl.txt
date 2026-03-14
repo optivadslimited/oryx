@@ -1,0 +1,908 @@
+
+ORYX EYEWEAR
+─────────────────────
+WEBSITE & ADMIN PANEL
+DEVELOPER SPECIFICATION
+
+Full-Stack Build — Frontend · Backend · CMS Admin Panel
+Version 1.0 — 2026 — Confidential
+
+Table of Contents
+01  —  Project Overview & Goals
+02  —  Design Inspiration & Reference
+03  —  Design System — Colors, Typography, Spacing
+04  —  Site Architecture & Page Map
+05  —  Frontend — Page-by-Page Specifications
+06  —  Admin Panel — Full Specification
+07  —  Backend & API Specification
+08  —  Database Schema
+09  —  E-Commerce & Checkout Flow
+10  —  Recommended Tech Stack
+11  —  Hosting, Performance & SEO
+12  —  Deliverables Checklist
+
+01 — Project Overview & Goals
+You are building the complete digital presence for Oryx Eyewear — a premium Moroccan eyewear brand. The website must feel like walking into a luxury boutique online: refined, minimal, intentional. Every pixel communicates quality and quiet confidence.
+
+What You Are Building
+A public-facing e-commerce website (storefront)
+A secure, private Admin Panel (CMS) for the brand owner to manage everything
+A backend API connecting both
+
+Core Objectives
+Sell glasses online: Morocco (MAD) and worldwide (EUR) with a clear order/inquiry form
+Build desire: Every page must create emotional want before functional need
+Admin control: The brand owner must be able to log in and control 100% of site content without touching code
+Mobile-first: 60%+ of visitors will be on mobile — design for mobile first, desktop second
+Performance: Fast load times are non-negotiable for conversion on Moroccan mobile networks
+
+The reference site is hillseyewear.com — study it carefully before starting. Adopt its scroll behavior, product presentation, editorial photography framing, and minimalist navigation style. Do not copy it — interpret it through the Oryx brand identity.
+
+02 — Design Inspiration & Reference Sites
+Primary Reference: Hills Eyewear (hillseyewear.com)
+This is the closest benchmark. Study and replicate the following specific behaviors and patterns:
+Navigation: Minimal fixed top bar, logo centered or left-aligned, no visual clutter, hamburger menu or sparse links only
+Hero Section: Full-screen editorial photography. The product is secondary to the mood. Large slow-fade or parallax image. A single line of copy maximum.
+Product Grid: Clean square/rectangular product cards. Product name, price only. Hover reveals second image or colorway selector.
+Product Detail Page (PDP): Large image left (or stacked on mobile). Sticky product info panel right. Smooth image gallery transitions.
+Typography: Serif display font for headings. Clean sans-serif for body. High contrast. Generous white space.
+Scroll Behavior: Smooth, deliberate. Sections fade or slide in on scroll. No jarring jumps.
+Color Palette: Near-white or off-white background. Deep navy or black text. Gold or warm accent. Product photos on clean neutral backdrops.
+Footer: Minimal. Logo, links, Instagram icon. Single-column on mobile.
+
+Secondary References
+Ray-Ban (ray-ban.com): Study the product filter UX, the virtual try-on teaser concept, and how they handle colorway switching on PDP
+Gentle Monster (gentlemonster.com): Editorial art direction, homepage as a visual statement, not a product grid
+Akila (akilaeyewear.com): Clean DTC layout, how they use brand story pages alongside product pages
+
+What Oryx Should NOT Look Like
+No generic Shopify out-of-the-box themes
+No banner-heavy layouts with promotional urgency banners
+No overcrowded navbars with dropdowns
+No cheap stock photography or lifestyle images that feel unrelated
+No auto-playing video with sound
+
+03 — Design System
+Color Palette
+Implement all colors as CSS custom properties (variables) at :root. Never hardcode hex values in component styles.
+
+TOKEN
+HEX
+PREVIEW
+USAGE
+--color-black
+#0A0F1E
+ 
+Primary text, logo mark, ultra-dark headers
+--color-navy
+#1B2A4A
+ 
+Section headings, CTA buttons, footer background
+--color-gold
+#C9A84C
+ 
+Accent — price tags, hover underlines, dividers, logo subtitle
+--color-cream
+#FAF8F4
+ 
+Site background (not white — warm cream)
+--color-sand
+#F0EAE0
+ 
+Alternating section backgrounds, card backgrounds
+--color-white
+#FFFFFF
+ 
+Cards, modals, form inputs, admin panel bg
+--color-mid-grey
+#888888
+ 
+Secondary text, meta labels, captions
+--color-light-grey
+#E8E4DE
+ 
+Dividers, input borders, disabled states
+--color-text
+#1A1A1A
+ 
+Body copy — near-black for legibility
+--color-error
+#C0392B
+ 
+Form validation errors, stock warnings
+--color-success
+#2E7D54
+ 
+Order confirmation, in-stock status
+
+
+Typography
+Use Google Fonts or Adobe Fonts. Load only the weights you need.
+
+ROLE
+SPECIFICATION
+Display / Logo Font
+Cormorant Garamond — weights 300, 400, 600 — Italic available. Use for the brand name, hero headlines, pull quotes.
+Heading Font
+Cormorant Garamond 600 or Playfair Display 700 — used for H1, H2, H3 across all pages.
+Body Font
+DM Sans — weights 300, 400, 500 — clean, modern, highly legible at small sizes. Use for paragraphs, nav, labels, buttons.
+Mono / Code (Admin)
+JetBrains Mono or Fira Code — admin panel only, for SKU display and code-like fields.
+Font Scale (Desktop)
+H1: 64–80px | H2: 40–48px | H3: 28–32px | Body: 16–18px | Small/Label: 13–14px
+Font Scale (Mobile)
+H1: 36–44px | H2: 28–32px | H3: 22–24px | Body: 15–16px | Small: 12–13px
+Letter Spacing
+Display headings: 0.08–0.12em (wide tracking) | Body: 0 | Buttons/Labels: 0.1–0.15em (caps)
+Line Height
+Headings: 1.1–1.2 | Body: 1.65–1.75 | Labels: 1.3
+
+
+Spacing System
+Use an 8px base grid. All margins, paddings, and gaps must be multiples of 8.
+
+TOKEN
+VALUE — USE
+--space-xs
+8px — icon gaps, tight inline spacing
+--space-sm
+16px — between labels and inputs, tight card padding
+--space-md
+24px — standard paragraph spacing, card internal padding
+--space-lg
+40px — section sub-element gaps
+--space-xl
+64px — between sections on desktop
+--space-2xl
+96px — major section breaks, hero padding
+--space-3xl
+128–160px — hero top/bottom padding on desktop
+
+
+UI Components — Style Rules
+Buttons — Primary: Background: --color-navy | Text: white | Padding: 14px 40px | Letter-spacing: 0.12em | Uppercase | No border-radius OR very subtle 2px radius | Hover: background shifts to --color-gold, text stays dark
+Buttons — Secondary: Background: transparent | Border: 1px solid --color-navy | Text: --color-navy | Same sizing | Hover: fills navy, text white
+Buttons — Ghost: No background, no border | Underline on hover | Used for 'Learn More' type CTAs
+Form Inputs: Border: 1px solid --color-light-grey | Background: white | Padding: 14px 16px | Font: DM Sans 400 16px | Focus: border color transitions to --color-gold | No box-shadow
+Cards: Background: white | No border-radius OR max 4px | Subtle shadow: 0 2px 12px rgba(0,0,0,0.06) | On hover: shadow deepens slightly, image zooms 3%
+Dividers: 1px solid --color-light-grey OR a thin 2px --color-gold line for section breaks
+Badges / Tags: Solid --color-gold background, dark text | OR outlined style | Uppercase, DM Sans, letter-spaced
+
+04 — Site Architecture & Page Map
+Public-Facing Pages
+
+ROUTE
+PAGE NAME
+PURPOSE
+/
+Home / Landing Page
+Brand statement, hero, featured products, story teaser, Instagram feed
+/shop
+Shop — All Products
+Full product grid with filter by frame/color/gender
+/shop/[slug]
+Product Detail Page
+Individual product: images, name, color, price, size guide, order form
+/collections/[name]
+Collection Page
+Filtered product view by collection (e.g. Frame 01, Frame 02)
+/story
+Brand Story
+Editorial long-form page: origin, DNA, Morocco angle, vision
+/contact
+Contact
+Simple contact form + Instagram link + email
+/order/[id]
+Order Confirmation
+Post-form submission confirmation with order summary
+/size-guide
+Size Guide
+Frame measurements, how to measure your face, fit guide
+/faq
+FAQ
+Common questions: shipping, returns, care instructions
+/legal/privacy
+Privacy Policy
+Required legal page
+/legal/terms
+Terms & Conditions
+Required legal page
+
+
+Admin Panel Pages (Private — Requires Login)
+ROUTE
+PURPOSE
+/admin/login
+Admin login screen (email + password, JWT session)
+/admin/dashboard
+Overview stats: orders, revenue, low stock alerts, recent orders
+/admin/products
+Full product list with inline status toggle, search, sort
+/admin/products/new
+Create new product — full form with image upload
+/admin/products/[id]/edit
+Edit existing product — all fields editable
+/admin/orders
+All customer orders/inquiries with status management
+/admin/orders/[id]
+Single order detail — customer info, items, status update
+/admin/collections
+Manage collections — create, rename, assign products
+/admin/content
+Edit site content: hero text, brand story copy, homepage sections
+/admin/settings
+Change admin password, manage shipping regions, currency settings
+
+
+05 — Frontend — Page-by-Page Specifications
+5.1 — Global Layout & Navigation
+Navigation Bar
+Fixed at top. Does NOT hide on scroll (unlike most sites) — always visible.
+Height: 64px desktop / 56px mobile
+Background: --color-cream with a very subtle bottom border (1px --color-light-grey)
+Left: ORYX wordmark in Cormorant Garamond 600, 22px, --color-black. Clicking returns to homepage.
+Center (desktop): navigation links — SHOP, STORY, CONTACT — DM Sans 400, 13px, uppercase, letter-spaced. Hover: --color-gold underline slides in.
+Right: Cart icon (bag icon, not a cart), shows item count badge if items in cart.
+Mobile: Hamburger icon right. Clicking opens full-screen overlay menu — dark background (--color-navy), large links centered, ORYX logo top-left.
+
+5.2 — Homepage
+Section 1: Hero
+Full viewport height (100vh) on desktop. 85vh on mobile.
+Full-bleed editorial photography. Dark, moody, high-contrast. Person wearing frames. NOT a product shot on white background.
+Overlay: very subtle dark gradient from bottom (rgba(0,0,0,0) to rgba(0,0,0,0.35))
+Text: centered or left-aligned. ONE headline maximum. Example: 'Worn with intention.' — Cormorant Garamond 300 italic, 80px desktop / 44px mobile, white.
+CTA Button below: 'DISCOVER THE COLLECTION' — secondary ghost button, white border, white text
+Scroll indicator: subtle animated down-arrow at bottom center
+Hero image is set via Admin Panel → Content → Hero Image. Must support image swap without code changes.
+
+Section 2: Featured Products
+3-column grid on desktop. 2-column on tablet. 1-column on mobile.
+Section heading: 'THE COLLECTION' — left-aligned, H2 style
+Each card: square product image (1:1 ratio), product name below, price below that
+Hover on desktop: second image fades in (front/side view swap). Subtle card lift (box-shadow increase).
+'VIEW ALL' ghost link bottom-right of section
+
+Section 3: Brand Statement
+Full-width section on --color-navy background
+Single centered large quote in Cormorant Garamond italic: 'I know who I am. I don't need validation.'
+White text, 52px desktop / 30px mobile
+Small gold divider line above the quote (2px, 60px wide, centered)
+
+Section 4: Brand Story Teaser
+Two-column layout: left 60% is a portrait editorial photograph. Right 40% has text.
+Text: heading 'Born in Morocco.' + 2–3 paragraph body copy + 'READ OUR STORY' CTA
+Image fades in on scroll (IntersectionObserver)
+
+Section 5: Instagram Feed
+Grid of 6 latest Instagram images (fetched via Instagram Basic Display API or Behold.so embed)
+Heading: '@oryxeyewear' with Instagram icon
+Each image links to Instagram post
+
+Section 6: Footer
+Three columns on desktop. Stacked on mobile.
+Column 1: ORYX logo + 'Born in Morocco. Built for everywhere.'
+Column 2: Nav links — Shop, Story, Contact, Size Guide, FAQ
+Column 3: Email newsletter signup form (name + email, minimal, one-line) + Instagram link
+Bottom bar: © 2026 Oryx Eyewear · Privacy Policy · Terms
+
+5.3 — Shop Page (/shop)
+Header: full-width short banner image. 'THE COLLECTION' heading overlaid.
+Below header: filter/sort bar — Filter by: Frame | Color | Price | Sort: Newest / Price ↑ ↓
+Product grid: 3 columns desktop, 2 columns tablet, 1 column mobile
+Product card elements: primary image, hover to show secondary image, frame name, colorway name, price in MAD (with EUR price in smaller text below), 'ADD TO BAG' on hover
+Out of stock products: still show with 'SOLD OUT' badge. Do not hide them.
+Pagination OR infinite scroll — preference for pagination (cleaner, better for conversion tracking)
+
+5.4 — Product Detail Page (PDP) — /shop/[slug]
+This is the most important page. It does the selling. Every element must be considered.
+Layout
+Desktop: 50/50 split. Left: image gallery. Right: sticky product details panel.
+Mobile: stacked. Images on top, info below.
+Left — Image Gallery
+Primary large image. Thumbnail strip below (or vertical strip on the side on desktop).
+Clicking thumbnail swaps main image with smooth crossfade.
+Swipe gesture support on mobile.
+Lightbox on click: full-screen image overlay with zoom capability.
+Support minimum 5 images per product (front, side, three-quarter, model wearing, detail close-up).
+Right — Product Info Panel (Sticky on Scroll)
+Product Name — H1, Cormorant Garamond 600, 42px
+Colorway Name — DM Sans, 14px, uppercase, --color-mid-grey
+Price — DM Sans 500, 26px, --color-black. If on sale: show original price struck through in grey
+Colorway Selector — visual swatches (circle or small square), clicking swaps images and updates URL
+Size Guide link — opens modal, not new page
+Product Description — 2–4 sentences. DM Sans 400, 16px.
+Details accordion: Frame Material | Lens Type | Temple Length | Bridge Width | Lens Width | Origin
+ORDER NOW / INQUIRE button — Primary CTA, full-width on mobile, fixed-width on desktop
+Below button: 'Free shipping in Morocco on orders over 500 MAD' — small, gold text
+Stock indicator: 'Only X left' if stock < 5. 'In Stock' if > 5. 'Sold Out' if 0.
+
+5.5 — Order / Checkout Form
+IMPORTANT: This is a FORM-BASED checkout, not a standard cart checkout. Customers fill in their details and Oryx manually confirms/processes orders. This is standard for early-stage DTC brands in Morocco. The form submits to the backend, creates an order record, sends email notification to admin, and sends confirmation email to customer.
+Form Fields
+Full Name: Required | Text input
+Phone Number: Required | Tel input | Auto-detect Morocco country code, but allow international
+Email Address: Required | Email input | Used for order confirmation
+City: Required | Dropdown: Casablanca, Rabat, Marrakech, Tangier, Other
+Full Delivery Address: Required if city is not 'Other' | Textarea
+Country: Required | Defaults to Morocco | Other options available for international
+Product: Auto-filled from PDP. Shows product name, colorway, price. Not editable by customer.
+Quantity: Default 1, max 3
+Special Notes: Optional | Textarea | 'Any special instructions or questions'
+Payment Method: Radio select: Cash on Delivery (COD) | Bank Transfer | Other (specify)
+Form Behavior
+Client-side validation before submit. Show inline errors in red below each field.
+On submit: shows loading state on button. On success: redirect to /order/[id] confirmation page.
+On error: show inline error message, do not clear form.
+Admin receives email notification with full order details.
+Customer receives order confirmation email with summary.
+
+5.6 — Brand Story Page (/story)
+Long editorial scroll. Think magazine article, not corporate About page.
+Large hero image top. Heading: 'Born in Morocco. Built for everywhere.'
+Alternating text/image sections as user scrolls.
+Pull quote sections: large gold italic text on dark background.
+End with a product CTA: 'Discover the first collection →'
+
+5.7 — Animations & Motion
+Page load: Fade in from slightly below (translateY 20px → 0, opacity 0 → 1, duration 600ms, ease-out). Stagger children by 80ms.
+Scroll reveal: IntersectionObserver triggers fade-in + translateY animation for each section. Threshold: 0.15.
+Image hover: transform: scale(1.03) on product card images. transition: 400ms ease.
+Button hover: Background color transition 250ms ease. No jump.
+Mobile nav: Overlay slides in from right or fades in. Backdrop blur behind.
+Product image swap: Crossfade (opacity transition 300ms)
+DO NOT use jarring slide-in animations or dramatic transforms. The brand is calm and precise. Motion should be felt, not seen.
+
+06 — Admin Panel — Full Specification
+The admin panel is a completely separate section of the site, accessible only at /admin. It requires authentication. It should feel clean and functional — not consumer-facing. Think Shopify admin, but simpler.
+
+6.1 — Authentication
+Single admin account (the brand owner). No multi-user system needed for V1.
+Login: email + password. JWT token stored in HttpOnly cookie.
+Session expires after 24 hours of inactivity.
+Forgot password: sends reset link to registered admin email.
+Login page: minimal, centered card. Oryx logo. No public access to any /admin route without valid session.
+
+6.2 — Dashboard
+Stats Cards (top row)
+Total Orders Today: Count of orders submitted today
+Total Revenue (This Month): Sum of all confirmed order values
+Total Products: Active / Total
+Low Stock Alert: Count of products with stock ≤ 5 (clickable, links to filtered products list)
+Recent Orders Table
+Last 10 orders. Columns: Order ID, Customer Name, Product, Total, Status, Date
+Status options (colored badges): Pending / Confirmed / Shipped / Delivered / Cancelled
+Quick Actions
++ Add New Product
+View All Orders
+Edit Homepage Content
+
+6.3 — Product Management
+Product List Page (/admin/products)
+Searchable by product name or SKU
+Filterable by: collection, status (active/archived), stock level
+Sortable by: name, price, stock, date added
+Each row shows: thumbnail image, name, SKU, price, stock, status toggle, Edit button, Delete button
+Status toggle: Active / Archived — archived products are hidden from the public site
+Bulk actions: Archive selected, Delete selected
+
+Add / Edit Product Form — FULL FIELD LIST
+This is the most critical admin screen. Every field listed below must be present:
+
+FIELD
+TYPE & BEHAVIOR
+Product Name
+Text input | Required | e.g. 'Frame 01 — The Tanger'
+URL Slug
+Text input | Auto-generated from name but editable | Must be unique | e.g. 'frame-01-tanger'
+Short Description
+Textarea (~150 chars) | Shown on product card hover and meta description
+Long Description
+Rich text editor (simple: bold, italic, bullet list only) | Shown on PDP
+SKU (per variant)
+Text | Auto-generated suggestion but editable | Format: ORX-[FRAME]-[COLOR]-[SIZE]
+Collection
+Dropdown | Admin creates collections first | e.g. 'Launch Collection', 'Frame 01'
+Frame Style
+Dropdown: Aviator / Wayfarer / Round / Square / Other | Used for filtering
+Gender Target
+Checkbox multi-select: Men / Women / Unisex
+Price — Morocco (MAD)
+Number input | Required | Used for .ma storefront
+Price — International (EUR)
+Number input | Required | Used for international display
+Compare-at Price (MAD)
+Number input | Optional | Shows crossed-out 'was' price if set
+Compare-at Price (EUR)
+Number input | Optional
+Frame Material
+Text | e.g. 'Acetate', 'Titanium', 'TR-90'
+Lens Type
+Text | e.g. 'Polarized UV400', 'Standard UV400'
+Lens Color
+Text | e.g. 'Dark Grey', 'Brown Gradient'
+Frame Color Name
+Text | e.g. 'Midnight Black', 'Dark Tortoise'
+Frame Color Hex
+Color picker input | Used for colorway swatch display on PDP
+Temple Length
+Number (mm)
+Bridge Width
+Number (mm)
+Lens Width
+Number (mm)
+Weight
+Number (grams)
+Stock Quantity
+Number | Per colorway/variant | Required
+Low Stock Threshold
+Number | Default 5 | Admin alerted when stock reaches this
+Product Status
+Toggle: Active / Archived
+Featured Product
+Checkbox | Featured products show on homepage
+SEO Title
+Text | Auto-filled from name, editable
+SEO Description
+Textarea | Auto-filled from short description, editable
+Product Images
+FULL IMAGE UPLOAD SECTION — see below
+
+
+Image Upload Section (Critical)
+The image upload section must be robust and user-friendly. The admin should never need to use FTP or external tools to add product images.
+Drag-and-drop upload zone — supports multiple files at once
+Click to browse also supported
+Accepted formats: JPG, PNG, WebP
+Max file size: 10MB per image
+Auto-converts to WebP on server for performance
+After upload, images appear as thumbnails in a sortable grid (drag to reorder)
+First image in order = primary image (shown on product grid)
+Second image = hover image (shown on card hover in shop grid)
+Any image can be set as primary by clicking a 'Set as Primary' star icon
+Any image can be deleted by clicking X on its thumbnail
+Minimum recommended: 5 images per product. Maximum: 20.
+Images stored in cloud storage (Cloudinary or AWS S3) — do not store in local server filesystem
+Alt text field below each uploaded image (for accessibility and SEO)
+
+Variant Management
+Each product can have multiple colorway variants (e.g. Black, Tortoise, Brown, Grey). Each variant is essentially the same frame in a different color, with its own:
+Color name and hex value
+SKU
+Stock quantity
+Price override (optional — if a colorway has different pricing)
+Its own set of images
+The admin adds variants using an 'Add Colorway' button that duplicates the variant form. Each variant appears as a tab or an expandable section.
+
+6.4 — Order Management
+Orders List
+All customer form submissions appear here as orders
+Each order row: Order ID (auto-generated), customer name, city, product + colorway, total price, payment method, status, submission date
+Filter by: status, date range, city, payment method
+Export to CSV button
+
+Order Detail View
+Customer: Full name, phone, email, city, full address
+Products: name, SKU, colorway, quantity, unit price, subtotal
+Order total
+Payment method chosen
+Customer notes
+Status update dropdown: Pending → Confirmed → Processing → Shipped → Delivered → Cancelled
+Tracking number field (optional, shown to customer if email notification is set up)
+Internal notes field — admin-only, not visible to customer
+'Send confirmation email' button — resends order confirmation to customer email
+
+6.5 — Content Management
+The admin must be able to edit the following site content without touching code:
+Hero Section: Upload new hero image(s), edit headline text, edit CTA button text and link
+Homepage Tagline: Edit the large brand statement quote
+Brand Story Page: Rich text editor for body copy. Upload section images.
+FAQ Page: Add/remove/edit FAQ questions and answers (accordion items)
+Size Guide: Upload size guide image. Edit measurement table.
+Footer: Edit footer tagline text. Update social media links.
+Announcement Bar: Optional thin bar above nav: toggle on/off, edit text (e.g. 'Free shipping in Morocco on orders over 500 MAD')
+SEO / Meta: Edit homepage meta title and description
+
+6.6 — Collections Management
+Create a collection: name, description, cover image, slug
+Assign products to collections from either the collection page or the product edit page
+Reorder products within a collection (drag to sort)
+Toggle collection visibility (active / hidden)
+
+6.7 — Settings
+Change admin email and password
+SMTP email configuration (for order notification emails)
+Default currency display settings
+Shipping fee configuration: Morocco flat rate, International flat rate
+Order notification email addresses (where admin order alerts are sent)
+
+07 — Backend & API Specification
+Architecture
+RESTful API (or GraphQL if developer prefers — REST recommended for simplicity)
+All API routes prefixed with /api/v1/
+Authentication via JWT. Public routes (GET products, POST orders) need no token. Admin routes require Authorization: Bearer [token] header.
+All responses return JSON. Error responses include an error.message field.
+
+Core API Endpoints
+
+Products
+ENDPOINT
+DESCRIPTION
+GET /api/v1/products
+List all active products. Supports query params: ?collection=, ?limit=, ?sort=, ?color=, ?featured=true
+GET /api/v1/products/:slug
+Get single product by slug. Returns full product object including variants and images.
+POST /api/v1/admin/products
+Create new product (admin auth required). Accepts multipart/form-data for image upload.
+PUT /api/v1/admin/products/:id
+Update product (admin auth required)
+DELETE /api/v1/admin/products/:id
+Soft-delete (archive) product. Does not permanently delete. (admin auth required)
+POST /api/v1/admin/products/:id/images
+Upload image(s) to a product (admin auth required)
+DELETE /api/v1/admin/products/:id/images/:imageId
+Remove image from product (admin auth required)
+
+
+Orders
+ENDPOINT
+DESCRIPTION
+POST /api/v1/orders
+Submit a new customer order. Public. Sends notification emails. Returns order ID.
+GET /api/v1/admin/orders
+List all orders (admin auth required). Supports ?status=, ?date_from=, ?date_to=
+GET /api/v1/admin/orders/:id
+Single order detail (admin auth required)
+PUT /api/v1/admin/orders/:id/status
+Update order status (admin auth required). Body: { status: 'confirmed' }
+GET /api/v1/admin/orders/export
+Export orders as CSV (admin auth required)
+
+
+Auth & Content
+ENDPOINT
+DESCRIPTION
+POST /api/v1/admin/auth/login
+Admin login. Body: { email, password }. Returns JWT token.
+POST /api/v1/admin/auth/logout
+Invalidate session.
+POST /api/v1/admin/auth/forgot-password
+Send password reset email.
+GET /api/v1/content/:key
+Get a content block by key (e.g. 'hero', 'story'). Public.
+PUT /api/v1/admin/content/:key
+Update a content block (admin auth required)
+POST /api/v1/newsletter
+Newsletter email signup. Body: { name, email }. Public.
+POST /api/v1/contact
+Contact form submission. Public.
+
+
+Email Notifications
+Admin alert on new order: Subject: 'New Order — [Order ID] — [Customer Name]'. Full order details in body.
+Customer confirmation: Subject: 'Your Oryx Order — [Order ID]'. Clean HTML email matching brand design.
+Use Nodemailer + SMTP (or Resend.com API — recommended for deliverability)
+Email templates must be HTML emails. Oryx branding: navy header, logo, clean layout, gold accent.
+
+08 — Database Schema
+Use PostgreSQL (recommended) or MongoDB. PostgreSQL preferred for relational order data integrity.
+
+Products Table
+FIELD
+TYPE & NOTES
+id
+UUID, primary key
+name
+VARCHAR(255) NOT NULL
+slug
+VARCHAR(255) UNIQUE NOT NULL — URL identifier
+short_description
+TEXT
+long_description
+TEXT (rich HTML)
+collection_id
+UUID FK → collections.id
+frame_style
+VARCHAR(50) — e.g. 'aviator'
+gender_target
+VARCHAR[] — e.g. ['men', 'unisex']
+frame_material
+VARCHAR(100)
+lens_type
+VARCHAR(100)
+lens_color
+VARCHAR(100)
+temple_length_mm
+INTEGER
+bridge_width_mm
+INTEGER
+lens_width_mm
+INTEGER
+weight_grams
+NUMERIC(5,1)
+status
+ENUM('active', 'archived') DEFAULT 'active'
+featured
+BOOLEAN DEFAULT false
+seo_title
+VARCHAR(255)
+seo_description
+TEXT
+created_at
+TIMESTAMP WITH TIME ZONE
+updated_at
+TIMESTAMP WITH TIME ZONE
+
+
+Product Variants Table
+FIELD
+TYPE & NOTES
+id
+UUID, primary key
+product_id
+UUID FK → products.id ON DELETE CASCADE
+color_name
+VARCHAR(100) NOT NULL — e.g. 'Midnight Black'
+color_hex
+CHAR(6) — e.g. 'C9A84C' without #
+sku
+VARCHAR(100) UNIQUE NOT NULL
+price_mad
+NUMERIC(10,2) NOT NULL
+price_eur
+NUMERIC(10,2) NOT NULL
+compare_price_mad
+NUMERIC(10,2) — sale/compare price
+compare_price_eur
+NUMERIC(10,2)
+stock_quantity
+INTEGER NOT NULL DEFAULT 0
+low_stock_threshold
+INTEGER DEFAULT 5
+is_default
+BOOLEAN DEFAULT false — one variant is the default shown
+sort_order
+INTEGER — order of display
+created_at
+TIMESTAMP WITH TIME ZONE
+
+
+Product Images Table
+FIELD
+TYPE & NOTES
+id
+UUID, primary key
+variant_id
+UUID FK → product_variants.id ON DELETE CASCADE
+url
+TEXT NOT NULL — full CDN URL (Cloudinary/S3)
+url_webp
+TEXT — WebP optimized version URL
+alt_text
+VARCHAR(255)
+sort_order
+INTEGER — position in gallery, 0 = primary
+is_hover
+BOOLEAN — second image shown on card hover
+width
+INTEGER — original width in px
+height
+INTEGER — original height in px
+created_at
+TIMESTAMP WITH TIME ZONE
+
+
+Orders Table
+FIELD
+TYPE & NOTES
+id
+UUID, primary key
+order_number
+VARCHAR(20) UNIQUE — human-readable, e.g. 'ORX-20260001'
+customer_name
+VARCHAR(255) NOT NULL
+customer_phone
+VARCHAR(50) NOT NULL
+customer_email
+VARCHAR(255) NOT NULL
+city
+VARCHAR(100)
+address
+TEXT
+country
+VARCHAR(100) DEFAULT 'Morocco'
+payment_method
+ENUM('cod', 'bank_transfer', 'other')
+payment_notes
+TEXT — used when 'other' is selected
+special_notes
+TEXT
+status
+ENUM('pending','confirmed','processing','shipped','delivered','cancelled') DEFAULT 'pending'
+tracking_number
+VARCHAR(100) — optional, filled by admin
+admin_notes
+TEXT — internal, never shown to customer
+currency
+CHAR(3) — 'MAD' or 'EUR'
+total_amount
+NUMERIC(10,2)
+notification_sent
+BOOLEAN DEFAULT false
+created_at
+TIMESTAMP WITH TIME ZONE
+updated_at
+TIMESTAMP WITH TIME ZONE
+
+
+Other Tables
+TABLE
+KEY FIELDS
+order_items
+id, order_id FK, variant_id FK, product_name (snapshot), color_name (snapshot), sku (snapshot), quantity, unit_price_mad, unit_price_eur
+collections
+id, name, slug, description, cover_image_url, sort_order, is_active, created_at
+content_blocks
+id, key (unique), title, body (rich text), image_url, meta JSON, updated_at
+newsletter_subscribers
+id, email, name, subscribed_at, is_active
+admin_users
+id, email, password_hash (bcrypt), last_login, created_at
+password_reset_tokens
+id, admin_user_id FK, token_hash, expires_at, used_at
+
+
+09 — E-Commerce & Checkout Flow
+Customer Journey
+STEP
+CUSTOMER EXPERIENCE
+TECHNICAL ACTION
+1
+Lands on homepage, browses hero + featured products
+Page load, image lazy loading, analytics pageview
+2
+Clicks product card → arrives on PDP
+Fetch product by slug from API. Pre-render or SSR.
+3
+Selects colorway, reads description
+Variant selection updates displayed SKU, stock, and images
+4
+Clicks 'ORDER NOW' → order form opens
+Modal overlay OR redirect to /shop/[slug]/order
+5
+Fills in details, selects payment method
+Client-side validation. Disable submit until valid.
+6
+Submits form
+POST /api/v1/orders. Backend validates, creates order record.
+7
+Sees success confirmation page
+Redirect to /order/[order_number]. Show order summary.
+8
+Receives confirmation email
+Backend triggers email via SMTP/Resend within 1 minute
+9
+Admin receives notification
+Simultaneous email to admin. Order appears in dashboard.
+
+
+Stock Management Rules
+When an order is submitted (status: pending), do NOT deduct stock yet
+When admin sets order to 'Confirmed', deduct stock from the variant
+If admin cancels an order that was confirmed, restore stock
+Display stock warnings on PDP: 'Only X left' when stock ≤ 5
+'Sold Out' state: CTA button changes to 'NOTIFY ME' — captures email for restock notification
+
+10 — Recommended Tech Stack
+This is a recommendation. Developer may propose alternatives. However, the final tech stack must support all specified features without compromise.
+
+LAYER
+RECOMMENDED TECHNOLOGY
+Frontend Framework
+Next.js 14+ (App Router) — SSR for SEO, RSC for performance, built-in image optimization
+Styling
+Tailwind CSS + CSS custom properties for brand tokens. NO pre-built UI component libraries (Shadcn OK for admin forms only).
+Animation
+Framer Motion for React animations. GSAP optional for advanced scroll sequences.
+Backend / API
+Next.js API routes OR a separate Node.js + Express server. Developer's choice.
+Database
+PostgreSQL via Neon (serverless, free tier) OR Supabase (PostgreSQL + built-in auth)
+ORM
+Prisma (type-safe, excellent with PostgreSQL + Next.js)
+Authentication (Admin)
+NextAuth.js OR custom JWT implementation. Credentials provider only (no OAuth needed).
+Image Storage & CDN
+Cloudinary (recommended — free tier, image transforms, auto-WebP) OR AWS S3 + CloudFront
+Image Upload
+Cloudinary Upload Widget on frontend OR multer on backend with Cloudinary API
+Email
+Resend.com (modern, reliable, free tier 3000/month) + React Email for templates
+Rich Text Editor (Admin)
+TipTap (headless, integrates with React) OR Quill
+Drag & Drop (Admin)
+dnd-kit (modern, accessible, works with Next.js)
+Form Handling
+React Hook Form + Zod validation (both frontend and backend)
+Deployment
+Vercel (frontend + API routes) — best integration with Next.js. OR Railway for separate backend.
+Domain
+oryxeyewear.com (register via Namecheap or Cloudflare)
+Analytics
+Vercel Analytics (free) + Google Analytics 4
+Instagram Feed
+Behold.so widget OR custom Instagram Basic Display API integration
+
+
+11 — Hosting, Performance & SEO
+Performance Requirements
+Google Lighthouse score target: Performance ≥ 90, Accessibility ≥ 90, SEO ≥ 95
+LCP (Largest Contentful Paint): < 2.5s on 4G mobile
+All product images: WebP format, max 200KB per image at display size
+Hero images: max 400KB. Use Next.js <Image> with priority={true} on hero
+Fonts: preload display font subset. Use font-display: swap.
+Lazy load all below-fold images
+No blocking third-party scripts on initial load
+
+SEO Requirements
+Every page has unique <title> and <meta description> — managed via admin content panel
+Product pages: structured data (JSON-LD) for Product schema including price, availability, image
+Sitemap.xml auto-generated and submitted to Google Search Console
+robots.txt: disallow /admin, allow everything else
+All images have descriptive alt text (admin-managed)
+Clean URL slugs — no query parameters in public URLs
+Hreflang tags if bilingual (Arabic/French) support is added later
+Open Graph tags on all pages for social sharing
+
+Security
+All admin routes protected by JWT middleware
+Rate limiting on order submission and login endpoints (prevent spam/brute force)
+Input sanitization on all form fields before database insert
+Environment variables for all secrets (never hardcode API keys)
+HTTPS enforced. Redirect all HTTP to HTTPS.
+CORS configured to allow only the production domain
+
+12 — Deliverables Checklist
+The following must be delivered and verified working before the project is considered complete:
+
+Frontend
+Homepage: Hero, featured products, brand statement, story teaser, Instagram section, footer
+Shop page: Product grid, filter/sort functionality
+Product Detail Page: Image gallery, variant selector, product info, order CTA
+Order Form: All fields, validation, submission, confirmation redirect
+Order Confirmation page: Summary of submitted order
+Brand Story page: Editorial layout with admin-managed copy
+Size Guide: Modal + standalone page
+FAQ: Accordion, admin-managed
+Contact page: Form + links
+Legal pages: Privacy, Terms (placeholder copy accepted)
+Responsive design: Tested on iPhone 12/13/14, Samsung Galaxy S21, iPad, Desktop 1280px+
+Browser support: Chrome, Safari, Firefox — last 2 major versions
+
+Admin Panel
+Login: Secure, session management, forgot password
+Dashboard: Stats, recent orders, quick actions
+Product CRUD: Create, read, update, archive, with full field set
+Image upload: Drag-drop multi-upload, reorder, delete, alt text
+Variant management: Per-product colorway variants with own stock/price/images
+Order list: Search, filter, export CSV
+Order detail: Status update, tracking number, admin notes
+Content management: Hero, story, FAQ, footer, announcement bar
+Collections: Create, assign products, reorder, toggle visibility
+Settings: Password change, email config, shipping rates
+
+Backend & Infrastructure
+All API endpoints: As specified in Section 07
+Database schema: As specified in Section 08, with all relations
+Email notifications: Admin order alert + customer confirmation
+Image CDN: All product images served via Cloudinary/S3 with WebP optimization
+Deployment: Live on production domain (oryxeyewear.com) with SSL
+Admin access: Working login credentials handed over to brand owner
+Environment setup: .env.example file documenting all required environment variables
+README: Setup instructions, tech stack notes, how to run locally
+
+
+
+ORYX EYEWEAR
+Website Developer Specification — v1.0 — 2026
+© 2026 Oryx Eyewear. All Rights Reserved. Confidential.

@@ -1,0 +1,210 @@
+// Oryx Eyewear — Database Schema
+// Matches dev spec Section 08
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ─────────────────────────────────────────────────────────────
+
+enum ProductStatus {
+  active
+  archived
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  processing
+  shipped
+  delivered
+  returned
+  cancelled
+}
+
+enum PaymentMethod {
+  cod
+  bank_transfer
+  other
+}
+
+// ─── Admin ─────────────────────────────────────────────────────────────
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  lastLogin    DateTime? @map("last_login")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  passwordResets PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String    @map("admin_user_id")
+  tokenHash String    @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─── Collections ────────────────────────────────────────────────────────
+
+model Collection {
+  id           String    @id @default(cuid())
+  name         String
+  slug         String    @unique
+  description  String?
+  coverImageUrl String?  @map("cover_image_url")
+  sortOrder    Int       @default(0) @map("sort_order")
+  isActive     Boolean   @default(true) @map("is_active")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  products Product[]
+}
+
+// ─── Products ───────────────────────────────────────────────────────────
+
+model Product {
+  id               String        @id @default(cuid())
+  name             String
+  slug             String        @unique
+  shortDescription String?       @map("short_description")
+  longDescription  String?       @map("long_description") // rich HTML
+  collectionId     String?       @map("collection_id")
+  frameStyle       String?       @map("frame_style") // Aviator, Wayfarer, etc.
+  genderTarget     String[]      @map("gender_target") // ["men", "women", "unisex"]
+  frameMaterial    String?       @map("frame_material")
+  lensType         String?       @map("lens_type")
+  lensColor        String?       @map("lens_color")
+  templeLengthMm   Int?          @map("temple_length_mm")
+  bridgeWidthMm    Int?          @map("bridge_width_mm")
+  lensWidthMm      Int?          @map("lens_width_mm")
+  weightGrams      Float?        @map("weight_grams")
+  status           ProductStatus @default(active)
+  featured         Boolean       @default(false)
+  seoTitle         String?       @map("seo_title")
+  seoDescription   String?       @map("seo_description")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  collection Collection?       @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  variants  ProductVariant[]
+}
+
+model ProductVariant {
+  id                 String   @id @default(cuid())
+  productId          String   @map("product_id")
+  colorName          String   @map("color_name")
+  colorHex           String?  @map("color_hex") // 6 chars without #
+  sku                String   @unique
+  priceMad           Decimal  @map("price_mad") @db.Decimal(10, 2)
+  priceEur           Decimal  @map("price_eur") @db.Decimal(10, 2)
+  comparePriceMad    Decimal? @map("compare_price_mad") @db.Decimal(10, 2) // old price / promotion
+  comparePriceEur    Decimal? @map("compare_price_eur") @db.Decimal(10, 2)
+  stockQuantity      Int      @default(0) @map("stock_quantity")
+  lowStockThreshold  Int      @default(5) @map("low_stock_threshold")
+  isDefault          Boolean  @default(false) @map("is_default")
+  sortOrder          Int      @default(0) @map("sort_order")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  product Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images  ProductImage[]
+  orderItems OrderItem[]
+}
+
+model ProductImage {
+  id         String   @id @default(cuid())
+  variantId  String   @map("variant_id")
+  url        String
+  urlWebp    String?  @map("url_webp")
+  altText    String?  @map("alt_text")
+  sortOrder  Int      @default(0) @map("sort_order")
+  isHover    Boolean  @default(false) @map("is_hover")
+  width      Int?
+  height     Int?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+}
+
+// ─── Orders (CRM) ──────────────────────────────────────────────────────
+
+model Order {
+  id               String        @id @default(cuid())
+  orderNumber      String        @unique @map("order_number") // ORX-20260001
+  customerName     String        @map("customer_name")
+  customerPhone    String        @map("customer_phone")
+  customerEmail    String        @map("customer_email")
+  city             String?
+  address          String?
+  country          String        @default("Morocco")
+  paymentMethod    PaymentMethod @map("payment_method")
+  paymentNotes     String?       @map("payment_notes")
+  specialNotes     String?       @map("special_notes")
+  status           OrderStatus   @default(pending)
+  trackingNumber   String?       @map("tracking_number")
+  trackingProvider String?       @map("tracking_provider") // for delivery API integration
+  adminNotes       String?       @map("admin_notes")
+  currency         String        @default("MAD")
+  totalAmount      Decimal       @map("total_amount") @db.Decimal(10, 2)
+  notificationSent Boolean      @default(false) @map("notification_sent")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  items OrderItem[]
+}
+
+model OrderItem {
+  id            String   @id @default(cuid())
+  orderId       String   @map("order_id")
+  variantId     String   @map("variant_id")
+  productName   String   @map("product_name") // snapshot
+  colorName     String   @map("color_name")   // snapshot
+  sku           String   // snapshot
+  quantity      Int
+  unitPriceMad  Decimal  @map("unit_price_mad") @db.Decimal(10, 2)
+  unitPriceEur  Decimal  @map("unit_price_eur") @db.Decimal(10, 2)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  order   Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variant ProductVariant @relation(fields: [variantId], references: [id])
+}
+
+// ─── Content & Settings ───────────────────────────────────────────────
+
+model ContentBlock {
+  id        String   @id @default(cuid())
+  key       String   @unique // hero, story, faq, footer, etc.
+  title     String?
+  body      String?  // rich text
+  imageUrl  String?  @map("image_url")
+  meta      Json?    // flexible for section-specific data
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model NewsletterSubscriber {
+  id          String   @id @default(cuid())
+  email       String
+  name        String?
+  subscribedAt DateTime @default(now()) @map("subscribed_at")
+  isActive    Boolean  @default(true) @map("is_active")
+}
+
+model AppSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+  updatedAt DateTime @updatedAt @map("updated_at")
+}

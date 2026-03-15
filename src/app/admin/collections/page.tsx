@@ -11,10 +11,10 @@ export default async function AdminCollectionsPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-serif font-semibold text-[#0A0F1E] mb-6">
+      <h1 className="text-2xl font-serif font-semibold text-black mb-6">
         Collections
       </h1>
-      <p className="text-sm text-[#888] mb-4">
+      <p className="text-sm text-black mb-4">
         Assign products to collections from the product edit page. Create collections here.
       </p>
       <div className="space-y-3">
@@ -24,8 +24,8 @@ export default async function AdminCollectionsPage() {
             className="bg-white border border-[#E8E4DE] rounded p-4 flex items-center justify-between"
           >
             <div>
-              <p className="font-medium text-[#1A1A1A]">{c.name}</p>
-              <p className="text-sm text-[#888]">
+              <p className="font-medium text-black">{c.name}</p>
+              <p className="text-sm text-black">
                 /{c.slug} · {c._count.products} products
                 {!c.isActive && " · Hidden"}
               </p>
@@ -33,7 +33,7 @@ export default async function AdminCollectionsPage() {
           </div>
         ))}
         {collections.length === 0 && (
-          <p className="text-[#888]">No collections yet. Create one via API or add a seed.</p>
+          <p className="text-black">No collections yet. Create one via API or add a seed.</p>
         )}
       </div>
     </div>

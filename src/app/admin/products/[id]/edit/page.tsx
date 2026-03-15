@@ -38,7 +38,7 @@ export default async function EditProductPage({
     longDescription: product.longDescription ?? "",
     collectionId: product.collectionId,
     frameStyle: product.frameStyle ?? "",
-    genderTarget: product.genderTarget,
+    genderTarget: typeof product.genderTarget === "string" ? (JSON.parse(product.genderTarget || "[]") as string[]) : product.genderTarget,
     frameMaterial: product.frameMaterial ?? "",
     lensType: product.lensType ?? "",
     lensColor: product.lensColor ?? "",
@@ -75,10 +75,10 @@ export default async function EditProductPage({
   return (
     <div className="max-w-4xl mx-auto">
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/admin/products" className="text-[#888] hover:text-[#1A1A1A]">
+        <Link href="/admin/products" className="text-black hover:text-black">
           ← Products
         </Link>
-        <h1 className="text-2xl font-serif font-semibold text-[#0A0F1E]">
+        <h1 className="text-2xl font-serif font-semibold text-black">
           Edit: {product.name}
         </h1>
       </div>

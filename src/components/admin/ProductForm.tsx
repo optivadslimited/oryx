@@ -200,16 +200,16 @@ export default function ProductForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {error && (
-        <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded text-sm">
+        <div className="p-3 bg-red-50 border border-red-200 text-black rounded text-sm">
           {error}
         </div>
       )}
 
       <section className="bg-white border border-[#E8E4DE] rounded p-6 space-y-4">
-        <h2 className="text-lg font-semibold text-[#0A0F1E]">Basic info</h2>
+        <h2 className="text-lg font-semibold text-black">Basic info</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Product name *</label>
+            <label className="block text-sm font-medium text-black mb-1">Product name *</label>
             <input
               type="text"
               value={product.name}
@@ -219,7 +219,7 @@ export default function ProductForm({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">URL slug</label>
+            <label className="block text-sm font-medium text-black mb-1">URL slug</label>
             <input
               type="text"
               value={product.slug}
@@ -229,7 +229,7 @@ export default function ProductForm({
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Short description</label>
+          <label className="block text-sm font-medium text-black mb-1">Short description</label>
           <textarea
             value={product.shortDescription}
             onChange={(e) => updateProduct({ shortDescription: e.target.value })}
@@ -238,7 +238,7 @@ export default function ProductForm({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Long description (HTML ok)</label>
+          <label className="block text-sm font-medium text-black mb-1">Long description (HTML ok)</label>
           <textarea
             value={product.longDescription}
             onChange={(e) => updateProduct({ longDescription: e.target.value })}
@@ -248,7 +248,7 @@ export default function ProductForm({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Collection</label>
+            <label className="block text-sm font-medium text-black mb-1">Collection</label>
             <select
               value={product.collectionId ?? ""}
               onChange={(e) => updateProduct({ collectionId: e.target.value || null })}
@@ -261,7 +261,7 @@ export default function ProductForm({
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Frame style</label>
+            <label className="block text-sm font-medium text-black mb-1">Frame style</label>
             <select
               value={product.frameStyle}
               onChange={(e) => updateProduct({ frameStyle: e.target.value })}
@@ -275,7 +275,7 @@ export default function ProductForm({
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Gender target</label>
+          <label className="block text-sm font-medium text-black mb-1">Gender target</label>
           <div className="flex gap-4">
             {GENDERS.map((g) => (
               <label key={g} className="flex items-center gap-2">
@@ -296,7 +296,7 @@ export default function ProductForm({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Frame material</label>
+            <label className="block text-sm font-medium text-black mb-1">Frame material</label>
             <input
               type="text"
               value={product.frameMaterial}
@@ -306,7 +306,7 @@ export default function ProductForm({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Lens type</label>
+            <label className="block text-sm font-medium text-black mb-1">Lens type</label>
             <input
               type="text"
               value={product.lensType}
@@ -316,7 +316,7 @@ export default function ProductForm({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Lens color</label>
+            <label className="block text-sm font-medium text-black mb-1">Lens color</label>
             <input
               type="text"
               value={product.lensColor}
@@ -327,7 +327,7 @@ export default function ProductForm({
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Temple (mm)</label>
+            <label className="block text-sm font-medium text-black mb-1">Temple (mm)</label>
             <input
               type="number"
               value={product.templeLengthMm ?? ""}
@@ -336,7 +336,7 @@ export default function ProductForm({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Bridge (mm)</label>
+            <label className="block text-sm font-medium text-black mb-1">Bridge (mm)</label>
             <input
               type="number"
               value={product.bridgeWidthMm ?? ""}
@@ -345,7 +345,7 @@ export default function ProductForm({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Lens width (mm)</label>
+            <label className="block text-sm font-medium text-black mb-1">Lens width (mm)</label>
             <input
               type="number"
               value={product.lensWidthMm ?? ""}
@@ -354,7 +354,7 @@ export default function ProductForm({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Weight (g)</label>
+            <label className="block text-sm font-medium text-black mb-1">Weight (g)</label>
             <input
               type="number"
               value={product.weightGrams ?? ""}
@@ -383,7 +383,7 @@ export default function ProductForm({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">SEO title</label>
+            <label className="block text-sm font-medium text-black mb-1">SEO title</label>
             <input
               type="text"
               value={product.seoTitle}
@@ -392,7 +392,7 @@ export default function ProductForm({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1">SEO description</label>
+            <label className="block text-sm font-medium text-black mb-1">SEO description</label>
             <input
               type="text"
               value={product.seoDescription}
@@ -405,7 +405,7 @@ export default function ProductForm({
 
       <section className="bg-white border border-[#E8E4DE] rounded p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-[#0A0F1E]">Variants (colorways)</h2>
+          <h2 className="text-lg font-semibold text-black">Variants (colorways)</h2>
           <button
             type="button"
             onClick={addVariant}
@@ -414,7 +414,7 @@ export default function ProductForm({
             + Add colorway
           </button>
         </div>
-        <p className="text-sm text-[#888]">
+        <p className="text-sm text-black">
           Each variant has its own price, compare-at price (for promotions), stock, and images.
         </p>
 
@@ -424,7 +424,7 @@ export default function ProductForm({
             className="border border-[#E8E4DE] rounded p-4 space-y-4 bg-[#FAF8F4]"
           >
             <div className="flex justify-between items-center">
-              <span className="font-medium text-[#1A1A1A]">
+              <span className="font-medium text-black">
                 Variant {index + 1}
                 {variant.isDefault && (
                   <span className="ml-2 text-xs text-[#C9A84C]">(default)</span>
@@ -434,7 +434,7 @@ export default function ProductForm({
                 <button
                   type="button"
                   onClick={() => removeVariant(index)}
-                  className="text-sm text-red-600 hover:underline"
+                  className="text-sm text-black hover:underline"
                 >
                   Remove
                 </button>
@@ -442,7 +442,7 @@ export default function ProductForm({
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Color name</label>
+                <label className="block text-sm font-medium text-black mb-1">Color name</label>
                 <input
                   type="text"
                   value={variant.colorName}
@@ -452,7 +452,7 @@ export default function ProductForm({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Color</label>
+                <label className="block text-sm font-medium text-black mb-1">Color</label>
                 <div className="flex gap-2 items-center">
                   <input
                     type="color"
@@ -469,7 +469,7 @@ export default function ProductForm({
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">SKU</label>
+                <label className="block text-sm font-medium text-black mb-1">SKU</label>
                 <input
                   type="text"
                   value={variant.sku}
@@ -499,7 +499,7 @@ export default function ProductForm({
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Price MAD *</label>
+                <label className="block text-sm font-medium text-black mb-1">Price MAD *</label>
                 <input
                   type="number"
                   min={0}
@@ -511,7 +511,7 @@ export default function ProductForm({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Price EUR *</label>
+                <label className="block text-sm font-medium text-black mb-1">Price EUR *</label>
                 <input
                   type="number"
                   min={0}
@@ -523,7 +523,7 @@ export default function ProductForm({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Compare price MAD (old/promo)</label>
+                <label className="block text-sm font-medium text-black mb-1">Compare price MAD (old/promo)</label>
                 <input
                   type="number"
                   min={0}
@@ -539,7 +539,7 @@ export default function ProductForm({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Compare price EUR (old/promo)</label>
+                <label className="block text-sm font-medium text-black mb-1">Compare price EUR (old/promo)</label>
                 <input
                   type="number"
                   min={0}
@@ -557,7 +557,7 @@ export default function ProductForm({
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Stock quantity</label>
+                <label className="block text-sm font-medium text-black mb-1">Stock quantity</label>
                 <input
                   type="number"
                   min={0}
@@ -567,7 +567,7 @@ export default function ProductForm({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Low stock threshold</label>
+                <label className="block text-sm font-medium text-black mb-1">Low stock threshold</label>
                 <input
                   type="number"
                   min={0}
@@ -579,7 +579,7 @@ export default function ProductForm({
             </div>
             {variant.images && variant.images.length > 0 && (
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Images</label>
+                <label className="block text-sm font-medium text-black mb-1">Images</label>
                 <div className="flex flex-wrap gap-2">
                   {variant.images.map((img) => (
                     <div key={img.id} className="w-20 h-20 rounded border border-[#E8E4DE] overflow-hidden">
@@ -587,7 +587,7 @@ export default function ProductForm({
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-[#888] mt-1">
+                <p className="text-xs text-black mt-1">
                   Upload new images in Edit mode after saving. First image = primary, second = hover.
                 </p>
               </div>
@@ -600,14 +600,14 @@ export default function ProductForm({
         <button
           type="submit"
           disabled={saving}
-          className="px-6 py-3 bg-[#1B2A4A] text-white font-medium uppercase tracking-wide hover:bg-[#C9A84C] hover:text-[#1A1A1A] disabled:opacity-60"
+          className="px-6 py-3 bg-[#1B2A4A] text-white font-medium uppercase tracking-wide hover:bg-[#C9A84C] hover:text-black disabled:opacity-60"
         >
           {saving ? "Saving…" : isEdit ? "Update product" : "Create product"}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-3 border border-[#1B2A4A] text-[#1B2A4A] font-medium uppercase tracking-wide hover:bg-[#1B2A4A] hover:text-white"
+          className="px-6 py-3 border border-[#1B2A4A] text-black font-medium uppercase tracking-wide hover:bg-[#1B2A4A] hover:text-white"
         >
           Cancel
         </button>

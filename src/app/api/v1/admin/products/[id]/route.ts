@@ -82,7 +82,7 @@ export async function PUT(
   if (longDescription != null) productData.longDescription = longDescription;
   if (collectionId != null) productData.collectionId = collectionId || null;
   if (frameStyle != null) productData.frameStyle = frameStyle;
-  if (genderTarget != null) productData.genderTarget = Array.isArray(genderTarget) ? genderTarget : [];
+  if (genderTarget != null) productData.genderTarget = Array.isArray(genderTarget) ? JSON.stringify(genderTarget) : String(genderTarget || "[]");
   if (frameMaterial != null) productData.frameMaterial = frameMaterial;
   if (lensType != null) productData.lensType = lensType;
   if (lensColor != null) productData.lensColor = lensColor;

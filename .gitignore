@@ -37,6 +37,9 @@ yarn-error.log*
 # uploads (product images)
 /public/uploads
 
+# SQLite dev database
+/prisma/dev.db
+
 # vercel
 .vercel
 

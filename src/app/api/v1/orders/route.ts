@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
       paymentMethod,
       paymentNotes,
       specialNotes,
+      affiliateCode,
       items,
     } = body;
 
@@ -66,7 +67,18 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
-      const qty = Math.min(Math.max(1, item.quantity), 10);
+      const requestedQty = Number(item.quantity);
+      if (!Number.isInteger(requestedQty) || requestedQty < 1 || requestedQty > 10) {
+        return NextResponse.json(
+          {
+            error: {
+              message: `Quantity for variant ${item.variantId} must be between 1 and 10 (got ${item.quantity})`,
+            },
+          },
+          { status: 400 }
+        );
+      }
+      const qty = requestedQty;
       const unitMad = Number(variant.priceMad);
       const unitEur = Number(variant.priceEur);
       totalAmount += (currency === "MAD" ? unitMad : unitEur) * qty;
@@ -81,36 +93,38 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const orderNumber = await generateOrderNumber();
-
-    const order = await prisma.order.create({
-      data: {
-        orderNumber,
-        customerName: String(customerName).trim(),
-        customerPhone: String(customerPhone).trim(),
-        customerEmail: String(customerEmail).trim(),
-        city: city ? String(city).trim() : null,
-        address: address ? String(address).trim() : null,
-        country: String(country).trim(),
-        paymentMethod: validPayment,
-        paymentNotes: paymentNotes ? String(paymentNotes).trim() : null,
-        specialNotes: specialNotes ? String(specialNotes).trim() : null,
-        status: "pending",
-        currency,
-        totalAmount,
-        items: {
-          create: orderItems.map((oi) => ({
-            variantId: oi.variantId,
-            productName: oi.productName,
-            colorName: oi.colorName,
-            sku: oi.sku,
-            quantity: oi.quantity,
-            unitPriceMad: oi.unitPriceMad,
-            unitPriceEur: oi.unitPriceEur,
-          })),
+    const order = await prisma.$transaction(async (tx) => {
+      const orderNumber = await generateOrderNumber(tx);
+      return tx.order.create({
+        data: {
+          orderNumber,
+          customerName: String(customerName).trim(),
+          customerPhone: String(customerPhone).trim(),
+          customerEmail: String(customerEmail).trim(),
+          city: city ? String(city).trim() : null,
+          address: address ? String(address).trim() : null,
+          country: String(country).trim(),
+          paymentMethod: validPayment,
+          paymentNotes: paymentNotes ? String(paymentNotes).trim() : null,
+          specialNotes: specialNotes ? String(specialNotes).trim() : null,
+          status: "pending",
+          currency,
+          totalAmount,
+          affiliateCode: affiliateCode ? String(affiliateCode).trim().slice(0, 50) : null,
+          items: {
+            create: orderItems.map((oi) => ({
+              variantId: oi.variantId,
+              productName: oi.productName,
+              colorName: oi.colorName,
+              sku: oi.sku,
+              quantity: oi.quantity,
+              unitPriceMad: oi.unitPriceMad,
+              unitPriceEur: oi.unitPriceEur,
+            })),
+          },
         },
-      },
-      include: { items: true },
+        include: { items: true },
+      });
     });
 
     return NextResponse.json({

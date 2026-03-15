@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
       longDescription: longDescription ?? null,
       collectionId: collectionId || null,
       frameStyle: frameStyle ?? null,
-      genderTarget: Array.isArray(genderTarget) ? genderTarget : [],
+      genderTarget: Array.isArray(genderTarget) ? JSON.stringify(genderTarget) : (genderTarget || "[]"),
       frameMaterial: frameMaterial ?? null,
       lensType: lensType ?? null,
       lensColor: lensColor ?? null,

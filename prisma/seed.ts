@@ -4,7 +4,8 @@ import * as bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  const adminEmail = process.env.ADMIN_EMAIL ?? "admin@oryxeyewear.com";
+  const rawEmail = process.env.ADMIN_EMAIL ?? "admin@oryxeyewear.com";
+  const adminEmail = String(rawEmail).toLowerCase().trim();
   const adminPassword = process.env.ADMIN_PASSWORD ?? "OryxAdmin2026!";
 
   const existing = await prisma.adminUser.findUnique({

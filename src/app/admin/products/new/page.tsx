@@ -11,7 +11,7 @@ export default async function NewProductPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-serif font-semibold text-[#0A0F1E] mb-6">
+      <h1 className="text-2xl font-serif font-semibold text-black mb-6">
         Add product
       </h1>
       <ProductForm collections={collections} />

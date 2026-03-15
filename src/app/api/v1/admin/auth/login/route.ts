@@ -58,8 +58,12 @@ export async function POST(request: NextRequest) {
     return response;
   } catch (e) {
     console.error("Login error:", e);
+    const message =
+      process.env.NODE_ENV === "development" && e instanceof Error
+        ? e.message
+        : "Login failed";
     return NextResponse.json(
-      { error: { message: "Login failed" } },
+      { error: { message } },
       { status: 500 }
     );
   }

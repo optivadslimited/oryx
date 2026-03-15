@@ -73,8 +73,9 @@ export async function PUT(
     }
   }
 
-  // When cancelling a confirmed order, restore stock
-  if (newStatus === "cancelled" && prevStatus === "confirmed") {
+  // When cancelling, restore stock if it was ever deducted (any status after pending)
+  const statusesWhereStockWasDeducted = ["confirmed", "processing", "shipped", "delivered"];
+  if (newStatus === "cancelled" && statusesWhereStockWasDeducted.includes(prevStatus)) {
     for (const item of order.items) {
       if (item.variant) {
         await prisma.productVariant.update({

@@ -42,12 +42,12 @@ export default async function AdminProductsPage({
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <h1 className="text-2xl font-serif font-semibold text-[#0A0F1E]">
+        <h1 className="text-2xl font-serif font-semibold text-black">
           Products
         </h1>
         <Link
           href="/admin/products/new"
-          className="inline-block px-4 py-2 bg-[#1B2A4A] text-white text-sm font-medium uppercase tracking-wide hover:bg-[#C9A84C] hover:text-[#1A1A1A]"
+          className="inline-block px-4 py-2 bg-[#1B2A4A] text-white text-sm font-medium uppercase tracking-wide hover:bg-[#C9A84C] hover:text-black"
         >
           + Add product
         </Link>
@@ -69,19 +69,19 @@ export default async function AdminProductsPage({
         <div className="flex gap-2">
           <Link
             href="/admin/products?status=active"
-            className={`px-3 py-2 text-sm rounded ${!status ? "bg-[#1B2A4A] text-white" : "bg-[#E8E4DE] text-[#1A1A1A]"}`}
+            className={`px-3 py-2 text-sm rounded ${!status ? "bg-[#1B2A4A] text-white" : "bg-[#E8E4DE] text-black"}`}
           >
             Active
           </Link>
           <Link
             href="/admin/products?status=archived"
-            className={`px-3 py-2 text-sm rounded ${status === "archived" ? "bg-[#1B2A4A] text-white" : "bg-[#E8E4DE] text-[#1A1A1A]"}`}
+            className={`px-3 py-2 text-sm rounded ${status === "archived" ? "bg-[#1B2A4A] text-white" : "bg-[#E8E4DE] text-black"}`}
           >
             Archived
           </Link>
           <Link
             href="/admin/products?low_stock=1"
-            className={`px-3 py-2 text-sm rounded ${lowStock === "1" ? "bg-amber-600 text-white" : "bg-[#E8E4DE] text-[#1A1A1A]"}`}
+            className={`px-3 py-2 text-sm rounded ${lowStock === "1" ? "bg-amber-600 text-white" : "bg-[#E8E4DE] text-black"}`}
           >
             Low stock
           </Link>
@@ -92,7 +92,7 @@ export default async function AdminProductsPage({
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#F0EAE0] text-left text-[#888] uppercase tracking-wide">
+              <tr className="bg-[#F0EAE0] text-left text-black uppercase tracking-wide">
                 <th className="px-4 py-3">Product</th>
                 <th className="px-4 py-3">SKU</th>
                 <th className="px-4 py-3">Price (MAD / EUR)</th>
@@ -104,7 +104,7 @@ export default async function AdminProductsPage({
             <tbody>
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-12 text-center text-[#888]">
+                  <td colSpan={6} className="px-4 py-12 text-center text-black">
                     No products yet. Add your first product to get started.
                   </td>
                 </tr>
@@ -124,30 +124,30 @@ export default async function AdminProductsPage({
                                 className="w-full h-full object-cover"
                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-[#888] text-xs">
+                              <div className="w-full h-full flex items-center justify-center text-black text-xs">
                                 No img
                               </div>
                             )}
                           </div>
                           <div>
-                            <p className="font-medium text-[#1A1A1A]">{product.name}</p>
+                            <p className="font-medium text-black">{product.name}</p>
                             {product.collection && (
-                              <p className="text-xs text-[#888]">{product.collection.name}</p>
+                              <p className="text-xs text-black">{product.collection.name}</p>
                             )}
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 font-mono text-[#888]">
+                      <td className="px-4 py-3 font-mono text-black">
                         {defaultVariant?.sku ?? "—"}
                       </td>
-                      <td className="px-4 py-3 text-[#1A1A1A]">
+                      <td className="px-4 py-3 text-black">
                         {defaultVariant
                           ? `${Number(defaultVariant.priceMad)} MAD / ${Number(defaultVariant.priceEur)} €`
                           : "—"}
                       </td>
                       <td className="px-4 py-3">
                         {product.variants.some((v) => v.stockQuantity <= 5) ? (
-                          <span className="text-amber-600 font-medium">
+                          <span className="text-black font-medium">
                             {product.variants.map((v) => v.stockQuantity).join(", ")} (low)
                           </span>
                         ) : (

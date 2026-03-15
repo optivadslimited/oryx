@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -83,7 +83,7 @@ model Product {
   longDescription  String?       @map("long_description") // rich HTML
   collectionId     String?       @map("collection_id")
   frameStyle       String?       @map("frame_style") // Aviator, Wayfarer, etc.
-  genderTarget     String[]      @map("gender_target") // ["men", "women", "unisex"]
+  genderTarget     String        @map("gender_target") // JSON array e.g. ["men","women","unisex"]
   frameMaterial    String?       @map("frame_material")
   lensType         String?       @map("lens_type")
   lensColor        String?       @map("lens_color")
@@ -108,10 +108,10 @@ model ProductVariant {
   colorName          String   @map("color_name")
   colorHex           String?  @map("color_hex") // 6 chars without #
   sku                String   @unique
-  priceMad           Decimal  @map("price_mad") @db.Decimal(10, 2)
-  priceEur           Decimal  @map("price_eur") @db.Decimal(10, 2)
-  comparePriceMad    Decimal? @map("compare_price_mad") @db.Decimal(10, 2) // old price / promotion
-  comparePriceEur    Decimal? @map("compare_price_eur") @db.Decimal(10, 2)
+  priceMad           Decimal  @map("price_mad")
+  priceEur           Decimal  @map("price_eur")
+  comparePriceMad    Decimal? @map("compare_price_mad") // old price / promotion
+  comparePriceEur    Decimal? @map("compare_price_eur")
   stockQuantity      Int      @default(0) @map("stock_quantity")
   lowStockThreshold  Int      @default(5) @map("low_stock_threshold")
   isDefault          Boolean  @default(false) @map("is_default")
@@ -158,7 +158,8 @@ model Order {
   trackingProvider String?       @map("tracking_provider") // for delivery API integration
   adminNotes       String?       @map("admin_notes")
   currency         String        @default("MAD")
-  totalAmount      Decimal       @map("total_amount") @db.Decimal(10, 2)
+  totalAmount      Decimal       @map("total_amount")
+  affiliateCode    String?       @map("affiliate_code") // affiliate link number when order came from affiliate
   notificationSent Boolean      @default(false) @map("notification_sent")
   createdAt        DateTime      @default(now()) @map("created_at")
   updatedAt        DateTime      @updatedAt @map("updated_at")
@@ -174,8 +175,8 @@ model OrderItem {
   colorName     String   @map("color_name")   // snapshot
   sku           String   // snapshot
   quantity      Int
-  unitPriceMad  Decimal  @map("unit_price_mad") @db.Decimal(10, 2)
-  unitPriceEur  Decimal  @map("unit_price_eur") @db.Decimal(10, 2)
+  unitPriceMad  Decimal  @map("unit_price_mad")
+  unitPriceEur  Decimal  @map("unit_price_eur")
   createdAt     DateTime @default(now()) @map("created_at")
 
   order   Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
@@ -207,4 +208,17 @@ model AppSetting {
   key   String @unique
   value String
   updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+// ─── Analytics (visits, platform reach) ─────────────────────────────────
+
+model AnalyticsVisit {
+  id         String   @id @default(cuid())
+  sessionId  String   @map("session_id")  // for live/dedupe
+  path       String?  @default("/")
+  country    String?
+  utmSource  String?  @map("utm_source")   // facebook, tiktok, snapchat, etc.
+  utmMedium  String?  @map("utm_medium")
+  utmCampaign String? @map("utm_campaign")
+  createdAt  DateTime @default(now()) @map("created_at")
 }

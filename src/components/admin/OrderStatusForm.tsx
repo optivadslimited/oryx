@@ -55,15 +55,15 @@ export default function OrderStatusForm({
 
   return (
     <form onSubmit={handleSubmit} className="bg-white border border-[#E8E4DE] rounded p-6 space-y-4">
-      <h2 className="text-lg font-semibold text-[#0A0F1E]">Update order status</h2>
-      <p className="text-sm text-[#888]">
+      <h2 className="text-lg font-semibold text-black">Update order status</h2>
+      <p className="text-sm text-black">
         When you confirm an order, stock is deducted. Use <strong>shipped</strong> /{" "}
         <strong>delivered</strong> when the delivery company updates you. You can also connect a
         delivery API via the webhook (Settings) to update status automatically.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Status</label>
+          <label className="block text-sm font-medium text-black mb-1">Status</label>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
@@ -77,7 +77,7 @@ export default function OrderStatusForm({
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Tracking number</label>
+          <label className="block text-sm font-medium text-black mb-1">Tracking number</label>
           <input
             type="text"
             value={tracking}
@@ -87,7 +87,7 @@ export default function OrderStatusForm({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Tracking provider</label>
+          <label className="block text-sm font-medium text-black mb-1">Tracking provider</label>
           <input
             type="text"
             value={provider}
@@ -98,7 +98,7 @@ export default function OrderStatusForm({
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-[#1A1A1A] mb-1">Internal notes (admin only)</label>
+        <label className="block text-sm font-medium text-black mb-1">Internal notes (admin only)</label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
@@ -110,7 +110,7 @@ export default function OrderStatusForm({
       <button
         type="submit"
         disabled={saving}
-        className="px-4 py-2 bg-[#1B2A4A] text-white text-sm font-medium uppercase tracking-wide hover:bg-[#C9A84C] hover:text-[#1A1A1A] disabled:opacity-60"
+        className="px-4 py-2 bg-[#1B2A4A] text-white text-sm font-medium uppercase tracking-wide hover:bg-[#C9A84C] hover:text-black disabled:opacity-60"
       >
         {saving ? "Saving…" : "Save changes"}
       </button>

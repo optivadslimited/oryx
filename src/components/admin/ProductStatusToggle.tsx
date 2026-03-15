@@ -38,8 +38,8 @@ export default function ProductStatusToggle({
       disabled={loading}
       className={`inline-block px-2 py-1 rounded text-xs font-medium ${
         status === "active"
-          ? "bg-green-100 text-green-800"
-          : "bg-gray-100 text-gray-600"
+          ? "bg-green-100 text-black"
+          : "bg-gray-100 text-black"
       } hover:opacity-80 disabled:opacity-50`}
     >
       {loading ? "…" : status}
